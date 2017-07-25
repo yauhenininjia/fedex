@@ -159,8 +159,8 @@ module Fedex
 
       # Successful request
       def success?(response)
-        response[:process_shipment_reply] &&
-          %w{SUCCESS WARNING NOTE}.include?(response[:process_shipment_reply][:highest_severity])
+        response[:process_shipment_reply.to_s.camelize] &&
+          %w{SUCCESS WARNING NOTE}.include?(response[:process_shipment_reply.to_s.camelize][:highest_severity.to_s.camelize])
       end
 
     end
