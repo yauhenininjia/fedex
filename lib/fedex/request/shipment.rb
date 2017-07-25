@@ -25,7 +25,7 @@ module Fedex
       def process_request
         api_response = self.class.post api_url, :body => build_xml
         puts api_response if @debug
-        response = parse_response(api_response)
+        response = parse_response(api_response)['Envelope']['Body']
         if success?(response)
           success_response(api_response, response)
         else
@@ -150,7 +150,13 @@ module Fedex
             add_requested_shipment(xml)
           }
         end
-        builder.doc.root.to_xml
+        wrap_to_soap_tags(builder.doc.root.to_xml)
+      end
+
+      def wrap_to_soap_tags(xml_string)
+        start = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><soapenv:Body>'
+        finish = '</soapenv:Body></soapenv:Envelope>'
+        [start, xml_string, finish].join
       end
 
       def service
