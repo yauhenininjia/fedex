@@ -44,7 +44,7 @@ module Fedex
     end
 
     def has_image?
-      options[:parts] && options[:parts][:image]
+      options[:parts.to_s.camelize] && options[:parts.to_s.camelize][:image.to_s.camelize]
     end
 
     def save(path, append_name = true)
